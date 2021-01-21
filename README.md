@@ -22,6 +22,14 @@
 	3. Ejecute y revise la salida por pantalla. 
 	4. Cambie el incio con 'start()' por 'run()'. Cómo cambia la salida?, por qué?.
 
+Cuando se inicia los 3 hilos con **start()** un nuevo hilo es creado y seguidamente **run()** que se encuentra dentro de CountThread es ejecutado por lo que da una salida sin sincronía. En cambio usando **run()** se inicia directamente, cada hilo empieza hasta que uno en ejecución haya terminado, es decir hay sincronía.
+
+- **start()**
+![](resources/start.png)
+
+- **run()**
+![](resources/run.png)
+
 **Parte II - Ejercicio Black List Search**
 
 

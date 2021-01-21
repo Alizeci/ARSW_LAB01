@@ -1,14 +1,24 @@
 # Compiled class file
 *.class
 
+# Maven files
+target/
+target
+
+# IntelliJ files
+.idea/
+*.iml
+
+# Eclipse files
+.settings/
+.project/
+.project
+.classpath
+.DS_Store
+/nbproject/
+
 # Log file
 *.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
 
 # Package Files #
 *.jar
