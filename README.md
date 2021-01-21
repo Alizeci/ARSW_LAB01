@@ -3,15 +3,8 @@
 ### Arquitecturas de Software - ARSW
 ## Ejercicio Introducción al paralelismo - Hilos - Caso BlackListSearch
 
-
-### Dependencias:
-####   Lecturas:
-*  [Threads in Java](http://beginnersbook.com/2013/03/java-threads/)  (Hasta 'Ending Threads')
-*  [Threads vs Processes]( http://cs-fundamentals.com/tech-interview/java/differences-between-thread-and-process-in-java.php)
-
-### Descripción
-  Este ejercicio contiene una introducción a la programación con hilos en Java, además de la aplicación a un caso concreto.
-  
+- Angélica Alfaro
+- Laura Izquierdo
 
 **Parte I - Introducción a Hilos en Java**
 
