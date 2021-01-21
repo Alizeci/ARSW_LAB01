@@ -6,9 +6,22 @@
 package edu.eci.arsw.threads;
 
 /**
- *
- * @author hcadavid
+ * Imprime por pantalla los números entre A y B.
+ * @author Angélica Alfaro & Laura Izquierdo
  */
-public class CountThread {
-    
+public class CountThread implements Runnable{
+	private int A;
+	private int B;
+	
+	public CountThread(int A, int B) {
+		this.A = A;
+		this.B = B;
+	}
+	
+	@Override
+	public void run() {
+		for(int i = A+1; i < B; i++) {
+			System.out.print(i+" ");
+		}
+	}
 }
