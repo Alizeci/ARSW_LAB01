@@ -3,10 +3,11 @@
 ### Arquitecturas de Software - ARSW
 ## Ejercicio Introducción al paralelismo - Hilos - Caso BlackListSearch
 
+### 👥 Integrantes
 - Angélica Alfaro
 - Laura Izquierdo
 
-**Parte I - Introducción a Hilos en Java**
+📌 **Parte I - Introducción a Hilos en Java**
 
 1. De acuerdo con lo revisado en las lecturas, complete las clases CountThread, para que las mismas definan el ciclo de vida de un hilo que imprima por pantalla los números entre A y B.
 2. Complete el método __main__ de la clase CountMainThreads para que:
@@ -15,16 +16,19 @@
 	3. Ejecute y revise la salida por pantalla. 
 	4. Cambie el incio con 'start()' por 'run()'. Cómo cambia la salida?, por qué?.
 
-Cuando se inicia los 3 hilos con **start()** un nuevo hilo es creado y seguidamente **run()** que se encuentra dentro de CountThread es ejecutado por lo que da una salida sin sincronía. En cambio usando **run()** se inicia directamente, cada hilo empieza hasta que uno en ejecución haya terminado, es decir hay sincronía.
+Una vez creados los 3 hilos **start()** cada hilo es creado y seguidamente **run()** que se encuentra dentro de CountThread es ejecutado por lo que da una salida sin sincronía. En cambio usando **run()** se inicia directamente, cada hilo empieza hasta que uno en ejecución haya terminado, es decir hay sincronía.
 
-- **start()**
-![](resources/start.png)
+Diferencia entre las salidas al usar **start()** y **run()**:
 
-- **run()**
-![](resources/run.png)
+- Cuando ejecutamos **start()** en un thread, este se crea y ejecuta el método **run()** dentro de él de forma no sincrónica, por lo que en la salida los mensajes de un hilo y otro se van mezclando.
 
-**Parte II - Ejercicio Black List Search**
+![](img/start.png)
 
+- Cuando ejecutamos **run()** directamente sólo ejecuta el código de forma sincrónica (en el mismo hilo), como una llamada a un método normal, por lo que en la salida los mensajes de un hilo y otro no se mezclan.
+
+![](img/run.png)
+
+📌 **Parte II - Ejercicio Black List Search**
 
 Para un software de vigilancia automática de seguridad informática se está desarrollando un componente encargado de validar las direcciones IP en varios miles de listas negras (de host maliciosos) conocidas, y reportar aquellas que existan en al menos cinco de dichas listas. 
 
@@ -57,6 +61,11 @@ Para 'refactorizar' este código, y hacer que explote la capacidad multi-núcleo
 
 	* Se sabe que el HOST 202.24.34.55 está reportado en listas negras de una forma más dispersa, y que el host 212.24.24.55 NO está en ninguna lista negra.
 
+**Ejemplo de registro confiable**
+![](img/trustworthy.png)
+
+**Ejemplo de registro no confiable**
+![](img/notTrustworthy.png)
 
 **Parte II.I Para discutir la próxima clase (NO para implementar aún)**
 
