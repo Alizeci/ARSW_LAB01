@@ -1,99 +1,51 @@
 package edu.eci.arsw.threads;
 
-import java.util.List;
-
+import java.util.LinkedList;
 import edu.eci.arsw.spamkeywordsdatasource.HostBlacklistsDataSourceFacade;
 
 /**
- * Thread de búsqueda de segmentos.
+ * Thread de búsqueda en segmentos de Black lists.
  * @author Angélica Alfaro & Laura Izquierdo
  */
 public class SearchThread extends Thread {
-	private static final int BLACK_LIST_ALARM_COUNT=5;
-	
 	private String ip;
 	private int inicioSegmento;
-	private int FinSegmento;
-	private List<Integer> ocurrenciasMaliciosas;
+	private int finSegmento;
 	private int checkedListsCount;
-	private int ocurrencesListsCount;
-	private HostBlacklistsDataSourceFacade source;
+	private LinkedList<Integer> ocurrenciasMaliciosas;
+	private HostBlacklistsDataSourceFacade dataSource;
 	
-	
-	public SearchThread(String ip, int inicioSegmento, int FinSegmento, HostBlacklistsDataSourceFacade source){
+	/**
+	 * Realiza la búsqueda de la dirección ip dada, entre el segmento de black lists indicado.
+	 * @param ip dirección a revisar en black lists
+	 * @param inicioSegmento inicio del segmento de la black list a revisar
+	 * @param finSegmento fin del segmento de la black list a revisar
+	 * @param dataSource el conjunto de black lists
+	 */
+	public SearchThread(String ip, int inicioSegmento, int finSegmento, HostBlacklistsDataSourceFacade dataSource){
 		this.ip = ip;
 		this.inicioSegmento = inicioSegmento;
-		this.FinSegmento = FinSegmento;
-		this.source = source;
+		this.finSegmento = finSegmento;
+		this.dataSource = dataSource;
 		this.checkedListsCount = 0;
+		ocurrenciasMaliciosas = new LinkedList<>();
 	};
 	
 	@Override
 	public void run() {
-		
-		for (int i = inicioSegmento; i < FinSegmento; i++) {
+		for (int i = inicioSegmento; i < finSegmento; i++) {
 			checkedListsCount++;
-			if (source.isInBlackListServer(i, ip)) {
+			if (dataSource.isInBlackListServer(i, ip)) {
 				ocurrenciasMaliciosas.add(i);
-				ocurrencesListsCount++;
 			}
 		}
 	}
 	
-	public String getIp() {
-		return ip;
-	}
-
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
-
-	public int getInicioSegmento() {
-		return inicioSegmento;
-	}
-
-	public void setInicioSegmento(int inicioSegmento) {
-		this.inicioSegmento = inicioSegmento;
-	}
-
-	public int getFinSegmento() {
-		return FinSegmento;
-	}
-
-	public void setFinSegmento(int finSegmento) {
-		FinSegmento = finSegmento;
-	}
-
-	public List<Integer> getOcurrenciasMaliciosas() {
+	public LinkedList<Integer> getOcurrenciasMaliciosas() {
 		return ocurrenciasMaliciosas;
-	}
-
-	public void setOcurrenciasMaliciosas(List<Integer> ocurrenciasMaliciosas) {
-		this.ocurrenciasMaliciosas = ocurrenciasMaliciosas;
 	}
 
 	public int getCheckedListsCount() {
 		return checkedListsCount;
 	}
-
-	public void setCheckedListsCount(int checkedListsCount) {
-		this.checkedListsCount = checkedListsCount;
-	}
-
-	public int getOcurrencesListsCount() {
-		return ocurrencesListsCount;
-	}
-
-	public void setOcurrencesListsCount(int ocurrencesListsCount) {
-		this.ocurrencesListsCount = ocurrencesListsCount;
-	}
-
-	public HostBlacklistsDataSourceFacade getSource() {
-		return source;
-	}
-
-	public void setSource(HostBlacklistsDataSourceFacade source) {
-		this.source = source;
-	}
-
 }

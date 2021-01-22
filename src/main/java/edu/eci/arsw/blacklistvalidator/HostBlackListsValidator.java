@@ -6,18 +6,21 @@
 package edu.eci.arsw.blacklistvalidator;
 
 import edu.eci.arsw.spamkeywordsdatasource.HostBlacklistsDataSourceFacade;
+import edu.eci.arsw.threads.SearchThread;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author hcadavid
+ * Validación de la ip dada en las black lists.
+ * @author Angélica Alfaro & Laura Izquierdo
  */
 public class HostBlackListsValidator {
 
-    private static final int BLACK_LIST_ALARM_COUNT=5;
+    private static final int BLACK_LIST_ALARM_COUNT = 5;
     
     /**
      * Check the given host's IP address in all the available black lists,
@@ -29,28 +32,44 @@ public class HostBlackListsValidator {
      * @param ipaddress suspicious host's IP address.
      * @return  Blacklists numbers where the given host's IP address was found.
      */
-    public List<Integer> checkHost(String ipaddress, int numeroHilos){
+    public List<Integer> checkHost(String ipaddress, int n){
         
         LinkedList<Integer> blackListOcurrences=new LinkedList<>();
+        ArrayList<SearchThread> threads = new ArrayList<>();
         
-        int ocurrencesCount=0;
+        int checkedListsCount = 0;
         
         HostBlacklistsDataSourceFacade skds=HostBlacklistsDataSourceFacade.getInstance();
         
-        int checkedListsCount=0;
-        
-        for (int i=0;i<skds.getRegisteredServersCount() && ocurrencesCount<BLACK_LIST_ALARM_COUNT;i++){
-            checkedListsCount++;
+        for (int i = 1; i < n + 1; i++) {
+        	int inicioSegmento = (skds.getRegisteredServersCount() / n) * (i - 1);
+        	int finSegmento;
+        	
+            if (n - 1 == (i - 1)) {
+            	finSegmento = skds.getRegisteredServersCount() - 1;
+            }else {
+            	finSegmento = (skds.getRegisteredServersCount() / n * i) - 1;
+            }
             
-            if (skds.isInBlackListServer(i, ipaddress)){
-                
-                blackListOcurrences.add(i);
-                
-                ocurrencesCount++;
+            SearchThread busqueda = new SearchThread(ipaddress, inicioSegmento, finSegmento, skds);
+            threads.add(busqueda);
+            busqueda.start();
+        }
+        
+        for (SearchThread pauseThread : threads) {
+            try {
+            	pauseThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
         
-        if (ocurrencesCount>=BLACK_LIST_ALARM_COUNT){
+        for (SearchThread ocurrences : threads) {
+        	blackListOcurrences.addAll(ocurrences.getOcurrenciasMaliciosas());
+        	checkedListsCount += ocurrences.getCheckedListsCount();
+        }
+        
+        if (blackListOcurrences.size() >= BLACK_LIST_ALARM_COUNT){
             skds.reportAsNotTrustworthy(ipaddress);
         }
         else{
@@ -62,9 +81,5 @@ public class HostBlackListsValidator {
         return blackListOcurrences;
     }
     
-    
     private static final Logger LOG = Logger.getLogger(HostBlackListsValidator.class.getName());
-    
-    
-    
 }
