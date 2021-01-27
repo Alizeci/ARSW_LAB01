@@ -4,8 +4,8 @@
 ## Ejercicio Introducción al paralelismo - Hilos - Caso BlackListSearch
 
 ### 👥 Integrantes
-- Angélica Alfaro
-- Laura Izquierdo
+- María Angélica Alfaro Fandiño
+- Laura Alejandra Izquierdo Castro
 
 📌 **Parte I - Introducción a Hilos en Java**
 
