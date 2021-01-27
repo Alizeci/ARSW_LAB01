@@ -108,11 +108,11 @@ Analice y plantee hipótesis con su compañero para las siguientes preguntas (pu
 
 **Por qué el mejor desempeño no se logra con los 500 hilos?, cómo se compara este desempeño cuando se usan 200?.**
 
-- Debido a que el mejoramiento de un programa S(n) paralelo está limitada por la porción serial del mismo, a mayor número de hilos el desempeño tenderá a ser el mismo.
+Debido a que el mejoramiento de un programa S(n) paralelo está limitada por la porción serial del mismo, a mayor número de hilos el desempeño tenderá a ser el mismo.
 
 **2. Cómo se comporta la solución usando tantos hilos de procesamiento como núcleos comparado con el resultado de usar el doble de éste?.**
-- Usando el doble de hilos de procesamiento como núcleos se evidencia el doble de desempeño que cuando se utiliza la misma cantidad de hilos como núcleos.
+Usando el doble de hilos de procesamiento como núcleos se evidencia el doble de desempeño que cuando se utiliza la misma cantidad de hilos como núcleos.
 
 **3. De acuerdo con lo anterior, si para este problema en lugar de 100 hilos en una sola CPU se pudiera usar 1 hilo en cada una de 100 máquinas hipotéticas, la ley de Amdahls se aplicaría mejor?. Si en lugar de esto se usaran c hilos en 100/c máquinas distribuidas (siendo c es el número de núcleos de dichas máquinas), se mejoraría?. Explique su respuesta.**
 
-- La ley de Amdahls se aplicaría mejor en situaciones donde haya un aprovechamiento de la porción paralelizable en cada una de las x máquinas hipotéticas que sean cuello botella.
+La ley de Amdahls se aplicaría mejor en situaciones donde haya un aprovechamiento de la porción paralelizable en cada una de las x máquinas hipotéticas que sean cuello botella.
