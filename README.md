@@ -71,17 +71,29 @@ Para 'refactorizar' este código, y hacer que explote la capacidad multi-núcleo
 
 La estrategia de paralelismo antes implementada es ineficiente en ciertos casos, pues la búsqueda se sigue realizando aún cuando los N hilos (en su conjunto) ya hayan encontrado el número mínimo de ocurrencias requeridas para reportar al servidor como malicioso. Cómo se podría modificar la implementación para minimizar el número de consultas en estos casos?, qué elemento nuevo traería esto al problema?
 
+- Para minimizar el número de consultas en estos casos, se podría incluir una variable global atómica para evitar que otros hilos la usen mientras se está modificando y se detenga cuando dicha variable cumpla la condición de fin de búsqueda (*BLACK_LIST_ALARM_COUNT* >= 5).
+
 **Parte III - Evaluación de Desempeño**
 
 A partir de lo anterior, implemente la siguiente secuencia de experimentos para realizar las validación de direcciones IP dispersas (por ejemplo 202.24.34.55), tomando los tiempos de ejecución de los mismos (asegúrese de hacerlos en la misma máquina):
 
-1. Un solo hilo.
-2. Tantos hilos como núcleos de procesamiento (haga que el programa determine esto haciendo uso del [API Runtime](https://docs.oracle.com/javase/7/docs/api/java/lang/Runtime.html)).
-3. Tantos hilos como el doble de núcleos de procesamiento.
-4. 50 hilos.
-5. 100 hilos.
+Al iniciar el programa ejecute el monitor jVisualVM, y a medida que corran las pruebas, revise y anote el consumo de CPU y de memoria en cada caso.
 
-Al iniciar el programa ejecute el monitor jVisualVM, y a medida que corran las pruebas, revise y anote el consumo de CPU y de memoria en cada caso. ![](img/jvisualvm.png)
+🧵 **1. Un solo hilo**
+![](img/unHilo.png)
+
+🧵 **2. Tantos hilos como núcleos de procesamiento (haga que el programa determine esto haciendo uso del [API Runtime](https://docs.oracle.com/javase/7/docs/api/java/lang/Runtime.html)).**
+![](img/nProcesadores.png)
+
+🧵 **3. Tantos hilos como el doble de núcleos de procesamiento.**
+![](img/dobleHilosProcesadores.png)
+
+🧵 **4. 50 hilos.**
+![](img/cincuentaHilos.png)
+
+🧵 **5. 100 hilos.**
+No fue posible identificar el tiempo de ejecución ya que el monitor de VisualVM no mostró ningún valor; así como ningún reporte sobre el consumo de CPU y memoria.
+
 
 Con lo anterior, y con los tiempos de ejecución dados, haga una gráfica de tiempo de solución vs. número de hilos. Analice y plantee hipótesis con su compañero para las siguientes preguntas (puede tener en cuenta lo reportado por jVisualVM):
 
