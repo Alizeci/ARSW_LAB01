@@ -67,13 +67,13 @@ Para 'refactorizar' este código, y hacer que explote la capacidad multi-núcleo
 **Ejemplo de registro no confiable**
 ![](img/notTrustworthy.png)
 
-**Parte II.I Para discutir la próxima clase (NO para implementar aún)**
+📌 **Parte II.I Para discutir la próxima clase (NO para implementar aún)**
 
 La estrategia de paralelismo antes implementada es ineficiente en ciertos casos, pues la búsqueda se sigue realizando aún cuando los N hilos (en su conjunto) ya hayan encontrado el número mínimo de ocurrencias requeridas para reportar al servidor como malicioso. Cómo se podría modificar la implementación para minimizar el número de consultas en estos casos?, qué elemento nuevo traería esto al problema?
 
 - Para minimizar el número de consultas en estos casos, se podría incluir una variable global atómica para evitar que otros hilos la usen mientras se está modificando y se detenga cuando dicha variable cumpla la condición de fin de búsqueda (*BLACK_LIST_ALARM_COUNT* >= 5).
 
-**Parte III - Evaluación de Desempeño**
+📌 **Parte III - Evaluación de Desempeño**
 
 A partir de lo anterior, implemente la siguiente secuencia de experimentos para realizar las validación de direcciones IP dispersas (por ejemplo 202.24.34.55), tomando los tiempos de ejecución de los mismos (asegúrese de hacerlos en la misma máquina):
 
@@ -83,29 +83,34 @@ Al iniciar el programa ejecute el monitor jVisualVM, y a medida que corran las p
 ![](img/unHilo.png)
 
 🧵 **2. Tantos hilos como núcleos de procesamiento (haga que el programa determine esto haciendo uso del [API Runtime](https://docs.oracle.com/javase/7/docs/api/java/lang/Runtime.html)).**
+> Para determinar la cantidad de núcleos de procesamiento se hizo uso de Runtime.getRuntime().availableProcessors()
+
 ![](img/nProcesadores.png)
 
 🧵 **3. Tantos hilos como el doble de núcleos de procesamiento.**
 ![](img/dobleHilosProcesadores.png)
 
 🧵 **4. 50 hilos.**
+!
 ![](img/cincuentaHilos.png)
 
 🧵 **5. 100 hilos.**
-No fue posible identificar el tiempo de ejecución ya que el monitor de VisualVM no mostró ningún valor; así como ningún reporte sobre el consumo de CPU y memoria.
+- No fue posible identificar el tiempo de ejecución ya que el monitor de VisualVM no mostró ningún valor; así como ningún reporte sobre el consumo de CPU y memoria.
 
+Con lo anterior, y con los tiempos de ejecución dados, haga una gráfica de tiempo de solución vs. número de hilos.
+![](img/t_vs_nHilos.png)
 
-Con lo anterior, y con los tiempos de ejecución dados, haga una gráfica de tiempo de solución vs. número de hilos. Analice y plantee hipótesis con su compañero para las siguientes preguntas (puede tener en cuenta lo reportado por jVisualVM):
-
-
+Analice y plantee hipótesis con su compañero para las siguientes preguntas (puede tener en cuenta lo reportado por jVisualVM):
 
 1. Según la [ley de Amdahls](https://www.pugetsystems.com/labs/articles/Estimating-CPU-Performance-using-Amdahls-Law-619/#WhatisAmdahlsLaw?):
 
-	![](img/ahmdahls.png), donde _S(n)_ es el mejoramiento teórico del desempeño, _P_ la fracción paralelizable del algoritmo, y _n_ el número de hilos, a mayor _n_, mayor debería ser dicha mejora. Por qué el mejor desempeño no se logra con los 500 hilos?, cómo se compara este desempeño cuando se usan 200?. 
+	![](img/ahmdahls.png), donde _S(n)_ es el mejoramiento teórico del desempeño, _P_ la fracción paralelizable del algoritmo, y _n_ el número de hilos, a mayor _n_, mayor debería ser dicha mejora. **Por qué el mejor desempeño no se logra con los 500 hilos?, cómo se compara este desempeño cuando se usan 200?.**
+
+- Debido a que el mejoramiento de un programa S(n) paralelo está limitada por la porción serial del mismo, a mayor número de hilos el desempeño tenderá a ser el mismo.
 
 2. Cómo se comporta la solución usando tantos hilos de procesamiento como núcleos comparado con el resultado de usar el doble de éste?.
+- Usando el doble de hilos de procesamiento como núcleos se evidencia el doble de desempeño que cuando se utiliza la misma cantidad de hilos como núcleos.
 
 3. De acuerdo con lo anterior, si para este problema en lugar de 100 hilos en una sola CPU se pudiera usar 1 hilo en cada una de 100 máquinas hipotéticas, la ley de Amdahls se aplicaría mejor?. Si en lugar de esto se usaran c hilos en 100/c máquinas distribuidas (siendo c es el número de núcleos de dichas máquinas), se mejoraría?. Explique su respuesta.
 
-
-
+- La ley de Amdahls se aplicaría mejor en situaciones donde haya un aprovechamiento de la porción paralelizable en cada una de las x máquinas hipotéticas que sean cuello botella.
