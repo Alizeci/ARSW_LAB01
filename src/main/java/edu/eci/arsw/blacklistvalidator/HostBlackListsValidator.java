@@ -42,13 +42,13 @@ public class HostBlackListsValidator {
         HostBlacklistsDataSourceFacade skds=HostBlacklistsDataSourceFacade.getInstance();
         
         for (int i = 1; i < n + 1; i++) {
-        	int inicioSegmento = (skds.getRegisteredServersCount() / n) * (i - 1);
+        	int inicioSegmento = (skds.getRegisteredServersCount() / n ) * (i - 1);
         	int finSegmento;
         	
-            if (n - 1 == (i - 1)) {
-            	finSegmento = skds.getRegisteredServersCount() - 1;
+            if (n == i) {
+            	finSegmento = skds.getRegisteredServersCount();
             }else {
-            	finSegmento = (skds.getRegisteredServersCount() / n * i) - 1;
+            	finSegmento = skds.getRegisteredServersCount() / n * i;
             }
             
             SearchThread busqueda = new SearchThread(ipaddress, inicioSegmento, finSegmento, skds);
